@@ -71,9 +71,15 @@
     <Compile Include="Assets\Scripts\CandyCrush.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleSprite.cs" />
+    <Compile Include="Assets\Scripts\Tools\Matchable.cs" />
+    <Compile Include="Assets\Scripts\Tools\MatchableGrid.cs" />
+    <Compile Include="Assets\Scripts\Tools\MatchablePool.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleEPOOutline.cs" />
+    <Compile Include="Assets\Scripts\Tools\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Tools\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Tools\GridSystem.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUtils.cs" />
+    <Compile Include="Assets\Scripts\Tools\Movable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\20 Logos PSD\Fonts\chunkfiveex\SIL Open Font License 1.1.txt" />

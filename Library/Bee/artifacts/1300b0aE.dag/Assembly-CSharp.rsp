@@ -407,6 +407,12 @@
 "Assets/Scripts/CandyCrush.cs"
 "Assets/Scripts/Game Manager.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/Tools/GridSystem.cs"
+"Assets/Scripts/Tools/Matchable.cs"
+"Assets/Scripts/Tools/MatchableGrid.cs"
+"Assets/Scripts/Tools/MatchablePool.cs"
+"Assets/Scripts/Tools/Movable.cs"
+"Assets/Scripts/Tools/ObjectPool.cs"
 "Assets/Scripts/Tools/Singleton.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0

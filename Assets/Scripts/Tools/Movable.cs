@@ -1,0 +1,32 @@
+using UnityEngine;
+using DG.Tweening;
+using System.Collections;
+
+public class Movable : MonoBehaviour
+{
+    private bool idle = true;
+    public bool Idle => idle;
+
+    [SerializeField] private float speed = 1;
+
+    public IEnumerator MoveToPosition(Vector3 targetPos)
+    {
+        if (speed < 0)
+        {
+            Debug.LogWarning("Speed must be a positive number");
+            yield break; // Exit the coroutine if speed is negative
+        }
+
+        float distance = Vector3.Distance(transform.position, targetPos);
+        float duration = distance / speed;
+
+        Tween moveTween = transform.DOMove(targetPos, duration)
+            .SetEase(Ease.Linear);
+
+        idle = false;
+
+        yield return moveTween.WaitForCompletion();
+
+        idle = true;
+    }
+}
