@@ -3,40 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\Baris\\Candy Coaster\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\candy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\candy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|c:\\users\\baris\\candy coaster\\assets\\scripts\\tools\\matchablepool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\matchablepool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\tools\\movable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\movable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\tools\\matchable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\matchable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\tools\\matchablegrid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|c:\\users\\baris\\candy coaster\\assets\\scripts\\tools\\matchablegrid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\matchablegrid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\tools\\matchablepool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\matchablepool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\tools\\gridsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\gridsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\tools\\movable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\movable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\game manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\game manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\tools\\objectpool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\objectpool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\candy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\candy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|c:\\users\\baris\\candy coaster\\assets\\scripts\\game manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\game manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|C:\\Users\\Baris\\Candy Coaster\\assets\\scripts\\tools\\objectpool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B546AACD-6FC7-C1DE-2A4F-D09B22701E05}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\tools\\objectpool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,11 +46,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "Candy.cs",
               "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Candy.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Candy.cs",
@@ -59,46 +59,58 @@
               "ViewState": "AQIAABIAAAAAAAAAAAAkwCwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-06T18:08:17.453Z",
-              "IsPinned": true,
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MatchableGrid.cs",
+              "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\MatchableGrid.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\MatchableGrid.cs",
+              "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\MatchableGrid.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Tools\\MatchableGrid.cs",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAgwCoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-02-26T23:39:16.257Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "MatchablePool.cs",
-              "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\MatchablePool.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\MatchablePool.cs",
-              "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\MatchablePool.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Tools\\MatchablePool.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAArAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-02T15:36:22.375Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "Matchable.cs",
               "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\Matchable.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\Matchable.cs",
               "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\Matchable.cs",
               "RelativeToolTip": "Assets\\Scripts\\Tools\\Matchable.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAFAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABoAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-26T23:39:18.338Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MatchableGrid.cs",
-              "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\MatchableGrid.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\MatchableGrid.cs",
-              "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\MatchableGrid.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Tools\\MatchableGrid.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
+              "DocumentIndex": 0,
+              "Title": "Movable.cs",
+              "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\Movable.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\Movable.cs",
+              "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\Movable.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Tools\\Movable.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-26T23:39:16.257Z",
+              "WhenOpened": "2024-02-20T15:07:42.456Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MatchablePool.cs",
+              "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\MatchablePool.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\MatchablePool.cs",
+              "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\MatchablePool.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Tools\\MatchablePool.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T15:36:22.375Z",
               "EditorCaption": ""
             },
             {
@@ -109,7 +121,7 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\GridSystem.cs",
               "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\GridSystem.cs",
               "RelativeToolTip": "Assets\\Scripts\\Tools\\GridSystem.cs",
-              "ViewState": "AQIAAGwAAAAAAAAAAAAvwHYAAAAjAAAA",
+              "ViewState": "AQIAAA8AAAAAAAAAAAD4vyUAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-20T15:19:49.443Z",
               "EditorCaption": ""
@@ -117,28 +129,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Movable.cs",
-              "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\Movable.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\Movable.cs",
-              "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\Movable.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Tools\\Movable.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAMAAAAAAAAA",
+              "Title": "Game Manager.cs",
+              "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Game Manager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Game Manager.cs",
+              "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Game Manager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Game Manager.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAQwCsAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-20T15:07:42.456Z",
+              "WhenOpened": "2024-02-19T11:45:30.542Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "ObjectPool.cs",
               "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\ObjectPool.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Tools\\ObjectPool.cs",
               "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Tools\\ObjectPool.cs",
               "RelativeToolTip": "Assets\\Scripts\\Tools\\ObjectPool.cs",
-              "ViewState": "AQIAACsAAAAAAAAAAAAvwEIAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwBYAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-20T14:19:03.404Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-20T14:19:03.404Z"
             },
             {
               "$type": "Document",
@@ -150,21 +161,7 @@
               "RelativeToolTip": "Assets\\Scripts\\Player.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-19T11:45:35.955Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Game Manager.cs",
-              "DocumentMoniker": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Game Manager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Game Manager.cs",
-              "ToolTip": "C:\\Users\\Baris\\Candy Coaster\\Assets\\Scripts\\Game Manager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Game Manager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-19T11:45:30.542Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-19T11:45:35.955Z"
             }
           ]
         }

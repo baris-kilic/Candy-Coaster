@@ -21,7 +21,7 @@ public class Movable : MonoBehaviour
         float duration = distance / speed;
 
         Tween moveTween = transform.DOMove(targetPos, duration)
-            .SetEase(Ease.Linear);
+            .SetEase(Ease.InOutBack);
 
         idle = false;
 

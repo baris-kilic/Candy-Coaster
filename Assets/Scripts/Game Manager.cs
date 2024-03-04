@@ -20,14 +20,14 @@ public class GameManager : Singleton<GameManager>
         pool = (MatchablePool) MatchablePool.Instance;
         grid = (MatchableGrid) MatchableGrid.Instance;
 
-        pool.PoolObjects(10);
+        
         Debug.Log(dimensions);
-        grid.InitGridSystem(dimensions);
+        
 
-        StartCoroutine(Demo());
+        StartCoroutine(Setup());
     }
 
-    private IEnumerator Demo()
+    private IEnumerator Setup()
     {
         /*Matchable m = pool.GetPooledObject();
         m.gameObject.SetActive(true);
@@ -38,37 +38,13 @@ public class GameManager : Singleton<GameManager>
             yield return StartCoroutine(m.MoveToPosition(randomPosition));
         }*/
 
-        gridOutput.text = grid.ToString();
-        yield return new WaitForSeconds(2);
-
-        Matchable a = pool.GetPooledObject();
-        a.gameObject.SetActive(true);
-        a.name = "a";
-
-        Matchable b = pool.GetPooledObject();
-        b.gameObject.SetActive(true);
-        b.name = "b";
-
-        grid.PutItemOnGrid(new Vector2Int(2, 3), a);
-        grid.PutItemOnGrid(new Vector2Int(4, 1), b);
-
-        gridOutput.text = grid.ToString();
-        yield return new WaitForSeconds(2);
-
-        grid.SwapItems(new Vector2Int(2, 3), new Vector2Int(4, 1));
-
-        gridOutput.text = grid.ToString();
-        yield return new WaitForSeconds(2);
-
-        grid.RemoveItemFromGrid(new Vector2Int(2, 3));
-        grid.RemoveItemFromGrid(new Vector2Int(4, 1));
-
-        gridOutput.text = grid.ToString();
-        yield return new WaitForSeconds(2);
-
-        pool.ReturnObjectToPool(a);
-        pool.ReturnObjectToPool(b);
+        //Loading Screen Here
+        pool.PoolObjects(dimensions.x * dimensions.y * 2);
+        grid.InitGridSystem(dimensions);
+        
 
         yield return null;
+
+        StartCoroutine(grid.PopulateGrid());
     }
 }

@@ -261,7 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   prefab: {fileID: 0}
-  dimensions: {x: 5, y: 5}
+  dimensions: {x: 7, y: 7}
   gridOutput: {fileID: 632415380}
 --- !u!1 &573472603
 GameObject:
@@ -293,6 +293,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6192201575914624180, guid: 1de6951cfaba69748a04ea27643de8cc, type: 3}
+  howManyTypes: 7
+  sprites:
+  - {fileID: 21300000, guid: e63cf0fbcddf4194da2066df3fbb09dd, type: 3}
+  - {fileID: 21300000, guid: 9576b9a8e95e1e842ab130637bc5f630, type: 3}
+  - {fileID: 21300000, guid: 6dabd8a080b086e4d9d8c1fd4b909d3a, type: 3}
+  - {fileID: 21300000, guid: ef1e7361118e053439853cb9689e85cc, type: 3}
+  - {fileID: 21300000, guid: 0a8480fdd58eae645bf74efc3eef1280, type: 3}
+  - {fileID: 21300000, guid: 67995fe10dad89b4ab98af7c56a8bed9, type: 3}
+  - {fileID: 21300000, guid: dc3c0743107da66448ce61287c051f8e, type: 3}
 --- !u!4 &573472605
 Transform:
   m_ObjectHideFlags: 0
@@ -643,6 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eab4e284ef8f084591998e94d971fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offScreenOffset: {x: 0, y: 9, z: 0}
 --- !u!4 &1599032144
 Transform:
   m_ObjectHideFlags: 0
@@ -652,7 +662,7 @@ Transform:
   m_GameObject: {fileID: 1599032142}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.02791, y: 0.6158928, z: 0.028072124}
+  m_LocalPosition: {x: -3, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
