@@ -60,10 +60,15 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.18f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Cursor.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleAudio.cs" />
-    <Compile Include="Assets\Scripts\Game Manager.cs" />
+    <Compile Include="Assets\Scripts\Match 3 Logic\MatchableGrid.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModulePhysics.cs" />
+    <Compile Include="Assets\Scripts\Match 3 Logic\MatchablePool.cs" />
+    <Compile Include="Assets\Scripts\Match 3 Logic\Matchable.cs" />
+    <Compile Include="Assets\Scripts\Match 3 Logic\Match.cs" />
+    <Compile Include="Assets\Scripts\Managers\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\Candy.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -71,15 +76,13 @@
     <Compile Include="Assets\Scripts\CandyCrush.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleSprite.cs" />
-    <Compile Include="Assets\Scripts\Tools\Matchable.cs" />
-    <Compile Include="Assets\Scripts\Tools\MatchableGrid.cs" />
-    <Compile Include="Assets\Scripts\Tools\MatchablePool.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleEPOOutline.cs" />
     <Compile Include="Assets\Scripts\Tools\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Tools\Singleton.cs" />
     <Compile Include="Assets\Scripts\Tools\GridSystem.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\Scripts\Tools\Movable.cs" />
+    <Compile Include="Assets\Scripts\Managers\Game Manager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\20 Logos PSD\Fonts\chunkfiveex\SIL Open Font License 1.1.txt" />

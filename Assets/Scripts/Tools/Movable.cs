@@ -21,7 +21,28 @@ public class Movable : MonoBehaviour
         float duration = distance / speed;
 
         Tween moveTween = transform.DOMove(targetPos, duration)
-            .SetEase(Ease.InOutBack);
+            .SetEase(Ease.OutBounce);
+
+        idle = false;
+
+        yield return moveTween.WaitForCompletion();
+
+        idle = true;
+    }
+
+    public IEnumerator SwapToPosition(Vector3 targetPos)
+    {
+        if (speed < 0)
+        {
+            Debug.LogWarning("Speed must be a positive number");
+            yield break; // Exit the coroutine if speed is negative
+        }
+
+        float distance = Vector3.Distance(transform.position, targetPos);
+        float duration = distance / speed;
+
+        Tween moveTween = transform.DOMove(targetPos, 0.2f)
+            .SetEase(Ease.Linear);
 
         idle = false;
 
