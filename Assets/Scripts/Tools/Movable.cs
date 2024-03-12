@@ -7,7 +7,7 @@ public class Movable : MonoBehaviour
     private bool idle = true;
     public bool Idle => idle;
 
-    [SerializeField] private float speed = 1;
+    [SerializeField] private float speed = 0.1f;
 
     public IEnumerator MoveToPosition(Vector3 targetPos)
     {
@@ -41,7 +41,7 @@ public class Movable : MonoBehaviour
         float distance = Vector3.Distance(transform.position, targetPos);
         float duration = distance / speed;
 
-        Tween moveTween = transform.DOMove(targetPos, 0.4f)
+        Tween moveTween = transform.DOMove(targetPos, 1f)
             .SetEase(Ease.Linear);
 
         idle = false;

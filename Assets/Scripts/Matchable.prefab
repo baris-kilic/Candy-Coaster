@@ -99,7 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  sprireRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  position: {x: 0, y: 0}
 --- !u!58 &8490264501554024775
 CircleCollider2D:
   m_ObjectHideFlags: 0

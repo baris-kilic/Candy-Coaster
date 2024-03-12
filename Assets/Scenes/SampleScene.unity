@@ -293,7 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6192201575914624180, guid: 1de6951cfaba69748a04ea27643de8cc, type: 3}
-  howManyTypes: 4
+  howManyTypes: 3
   sprites:
   - {fileID: 21300000, guid: e63cf0fbcddf4194da2066df3fbb09dd, type: 3}
   - {fileID: 21300000, guid: 9576b9a8e95e1e842ab130637bc5f630, type: 3}
