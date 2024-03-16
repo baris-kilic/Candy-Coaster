@@ -59,9 +59,9 @@ public class MatchableGrid : GridSystem<Matchable>
         for (int i = 0; i < newMatchables.Count; i++)
         {
             if (i == newMatchables.Count - 1)
-                yield return StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y)));
+                yield return StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y), false));
             else
-                StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y)));
+                StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y), false));
             if (initialPopulation)
                 yield return new WaitForSeconds(0.01f);
         }
@@ -171,7 +171,8 @@ public class MatchableGrid : GridSystem<Matchable>
 
         horizontalMatch = GetMatchesInDirection(match, matchable, Vector2Int.left);
         horizontalMatch.Merge(GetMatchesInDirection(match, matchable, Vector2Int.right));
-
+        
+        horizontalMatch.setOrientation(Orientation.horizontal);
         if (horizontalMatch.Count > 1)
         {
             match.Merge(horizontalMatch);
@@ -181,6 +182,7 @@ public class MatchableGrid : GridSystem<Matchable>
         verticalMatch = GetMatchesInDirection(match, matchable, Vector2Int.up);
         verticalMatch.Merge(GetMatchesInDirection(match, matchable, Vector2Int.down));
 
+        verticalMatch.setOrientation(Orientation.vertical);
         if (verticalMatch.Count > 1)
         {
             match.Merge(verticalMatch);
@@ -196,11 +198,12 @@ public class MatchableGrid : GridSystem<Matchable>
     private void GetBranches(Match tree, Match selectedBranch, Orientation orientation)
     {
         Match branch;
+        
         foreach (Matchable match in selectedBranch.Matchables)
         {
             branch = GetMatchesInDirection(tree, match, orientation == Orientation.horizontal ? Vector2Int.left : Vector2Int.up);
             branch.Merge(GetMatchesInDirection(tree, match, orientation == Orientation.horizontal ? Vector2Int.right : Vector2Int.down));
-
+            branch.setOrientation(orientation);
             if (branch.Count > 1)
             {
                 tree.Merge(branch);

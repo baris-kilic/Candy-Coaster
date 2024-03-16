@@ -8,6 +8,8 @@ public class Matchable : Movable
     private MatchablePool pool;
     private int type;
     private Cursor cursor;
+    private bool hasPowerUp = false;
+    private PowerType powerType;
 
     public int Type 
     {
@@ -18,9 +20,11 @@ public class Matchable : Movable
     }    
     
     public SpriteRenderer spriteRenderer;
-
+    public bool HasPowerUp { get { return hasPowerUp; } }
 
     public Vector2Int position;
+
+    public PowerType getPowerType { get { return  powerType; } }
 
     private void Awake()
     {
@@ -35,14 +39,21 @@ public class Matchable : Movable
         spriteRenderer.sprite = sprite;
     }
 
-    public IEnumerator Resolve(Transform collectionPoint)
+    public IEnumerator Resolve(Transform collectionPoint, bool isPowerUp)
     {
         spriteRenderer.sortingOrder = 2;
 
-        yield return StartCoroutine(MoveToPosition(collectionPoint.position));
+        yield return StartCoroutine(MoveToPosition(collectionPoint.position, isPowerUp));
 
         spriteRenderer.sortingOrder = 1;
         pool.ReturnObjectToPool(this);
+    }
+
+    public void setPowerUp(Sprite sprite, PowerType powerType)
+    {
+
+        spriteRenderer.sprite = sprite;
+        hasPowerUp = true;
     }
 
     private void OnMouseDown()
