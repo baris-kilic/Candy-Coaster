@@ -9,7 +9,8 @@ public class MatchablePool : ObjectPool<Matchable>
     public bool allowSwap = true;
 
     [SerializeField] private Sprite crossPowerUp;
-    [SerializeField] private Sprite match4PowerUp;
+    [SerializeField] private Sprite match4VerticalPowerUp;
+    [SerializeField] private Sprite match4HorizontalPowerUp;
     [SerializeField] private Sprite match5PowerUp;
     public void RandomizeType(Matchable toRandomize)
     {
@@ -34,9 +35,12 @@ public class MatchablePool : ObjectPool<Matchable>
 
     public Matchable setPowerUpForMatchable(Matchable matchable, PowerType powerType)
     {
-        if (powerType == PowerType.match4)
-            return matchable.setPowerUp(match4PowerUp, powerType);
-        
+        if (powerType == PowerType.match4vertical)
+            return matchable.setPowerUp(match4VerticalPowerUp, powerType);
+
+        else if (powerType == PowerType.match4horizontal)
+            return matchable.setPowerUp(match4HorizontalPowerUp, powerType);
+
         else if (powerType == PowerType.match5)
             return matchable.setPowerUp(match5PowerUp, powerType);
         

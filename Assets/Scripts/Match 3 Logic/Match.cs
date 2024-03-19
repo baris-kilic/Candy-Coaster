@@ -14,8 +14,8 @@ public enum Orientation
 public enum PowerType
 {
     none,
-    match3,
-    match4,
+    match4vertical,
+    match4horizontal,
     match5,
     cross,
 }
@@ -35,10 +35,10 @@ public class Match
                 return PowerType.cross;
             else if (matchables.Count > 4)
                 return PowerType.match5;
-            else if (matchables.Count == 4)
-                return PowerType.match4;
-            else if (matchables.Count == 3)
-                return PowerType.match3;
+            else if (matchables.Count == 4 && orientation == Orientation.vertical)
+                return PowerType.match4vertical;
+            else if (matchables.Count == 4 && orientation == Orientation.horizontal)
+                return PowerType.match4horizontal;
             else
                 return PowerType.none;
         }
@@ -112,4 +112,6 @@ public class Match
 
         return s;
     }
+
+
 }

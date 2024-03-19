@@ -8,8 +8,7 @@ public class Matchable : Movable
     private MatchablePool pool;
     private int type;
     private Cursor cursor;
-    private bool hasPowerUp = false;
-    private PowerType powerType;
+    private PowerType powerType = PowerType.none;
 
     public int Type 
     {
@@ -20,7 +19,6 @@ public class Matchable : Movable
     }    
     
     public SpriteRenderer spriteRenderer;
-    public bool HasPowerUp { get { return hasPowerUp; } }
 
     public Vector2Int position;
 
@@ -41,6 +39,7 @@ public class Matchable : Movable
 
     public IEnumerator Resolve(Transform collectionPoint, bool isPowerUp)
     {
+        this.powerType = PowerType.none;
         spriteRenderer.sortingOrder = 2;
 
         yield return StartCoroutine(MoveToPositionTween(collectionPoint.position, isPowerUp));
@@ -53,7 +52,6 @@ public class Matchable : Movable
     {
         this.powerType = powerType;
         spriteRenderer.sprite = sprite;
-        hasPowerUp = true;
         return this;
     }
 

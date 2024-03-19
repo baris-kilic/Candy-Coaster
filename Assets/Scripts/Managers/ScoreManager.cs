@@ -33,20 +33,19 @@ public class ScoreManager : Singleton<ScoreManager>
         scoreText.text = "Score : " + score;
     }
 
-    public IEnumerator ResolveMatch(Match toResolve)
+    public IEnumerator ResolveMatch(Match toResolve, bool fromPowerUp)
     {
         Matchable matchable;
         Matchable powerUpMatchable = null;
         Transform targetPoint = collectionPoint;
         bool isPowerUp = false;
 
-        if (toResolve.Count > 3)
+        if (!fromPowerUp && toResolve.Count > 3)
         {
             powerUpMatchable = pool.setPowerUpForMatchable(toResolve.getPowerUpMatchable, toResolve.Type);
             toResolve.RemoveMatchable(powerUpMatchable);
             targetPoint = powerUpMatchable.transform;
             powerUpMatchable.spriteRenderer.sortingOrder = 3;
-
         }
 
         for (int i = 0; i != toResolve.Count; i++)

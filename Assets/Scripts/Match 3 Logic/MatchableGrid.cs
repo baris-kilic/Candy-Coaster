@@ -103,7 +103,7 @@ public class MatchableGrid : GridSystem<Matchable>
         while (CheckBound(position) && !isEmpty(position))
         {
             Matchable next = GetItemFromGrid(position);
-            if (next.Type == toMatch.Type)
+            if (next.Type == toMatch.Type && next.getPowerType == PowerType.none)
             {
                 if (!tree.Contains(next))
                     matches.AddMatchable(next);
@@ -121,23 +121,97 @@ public class MatchableGrid : GridSystem<Matchable>
     public IEnumerator TrySwap(Matchable[] toBeSwapped)
     {
         pool.allowSwap = false;
+        Match matches1 = null;
+        Match matches2 = null;
+        bool powerUpMatch1 = false;
+        bool powerUpMatch2 = false;
         Matchable[] copies = new Matchable[2];
         copies[0] = toBeSwapped[0];
         copies[1] = toBeSwapped[1];
 
         yield return StartCoroutine(Swap(copies));
 
-        Match matches1 = GetMatch(copies[0]);
-        Match matches2 = GetMatch(copies[1]);
+        if (copies[0].getPowerType != PowerType.none)
+        {
+            powerUpMatch1 = true;
+            matches1 = GetPowerUpMatch(copies[0]);
+        } else
+        {
+            matches1 = GetMatch(copies[0]);
+        }
 
-        if (matches1 != null)
+        if (copies[1].getPowerType != PowerType.none)
         {
-            StartCoroutine(scoreManager.ResolveMatch(matches1));
-        }
-        if (matches2 != null)
+            powerUpMatch2 = true;
+            matches2 = GetPowerUpMatch(copies[1]);
+        } else
         {
-            StartCoroutine(scoreManager.ResolveMatch(matches2));
+            matches2 = GetMatch(copies[1]);
         }
+
+        if (powerUpMatch1 || powerUpMatch2)
+        {
+            if (powerUpMatch1)
+            {
+                if (matches2 != null)
+                {
+                    List<Matchable> elementsToRemoveFromMatches1 = new List<Matchable>();
+                    foreach (Matchable matchable1 in matches1.Matchables)
+                    {
+                        foreach (Matchable matchable2 in matches2.Matchables)
+                        {
+                            if (matchable1 == matchable2)
+                            {
+                                elementsToRemoveFromMatches1.Add(matchable1);
+                                break; 
+                            }
+                        }
+                    }
+
+                    // Remove elements from matches1
+                    foreach (Matchable matchableToRemove in elementsToRemoveFromMatches1)
+                    {
+                        matches1.RemoveMatchable(matchableToRemove);
+                    }
+                }
+                StartCoroutine(scoreManager.ResolveMatch(matches1, true));
+            }
+            if (powerUpMatch2)
+            {
+                if (matches1 != null)
+                {
+                    List<Matchable> elementsToRemoveFromMatches2 = new List<Matchable>();
+                    foreach (Matchable matchable2 in matches2.Matchables)
+                    {
+                        foreach (Matchable matchable1 in matches1.Matchables)
+                        {
+                            if (matchable2 == matchable1)
+                            {
+                                elementsToRemoveFromMatches2.Add(matchable2);
+                                break; 
+                            }
+                        }
+                    }
+
+                    // Remove elements from matches2
+                    foreach (Matchable matchableToRemove in elementsToRemoveFromMatches2)
+                    {
+                        matches2.RemoveMatchable(matchableToRemove);
+                    }
+                }
+                StartCoroutine(scoreManager.ResolveMatch(matches2, true));
+            }
+        }
+
+        if (matches1 != null && !powerUpMatch1)
+        {
+            StartCoroutine(scoreManager.ResolveMatch(matches1, false));
+        }
+        if (matches2 != null && !powerUpMatch2)
+        {
+            StartCoroutine(scoreManager.ResolveMatch(matches2, false));
+        }
+
         if (matches1 == null && matches2 == null)
         {
             yield return StartCoroutine(Swap(copies));
@@ -235,6 +309,78 @@ public class MatchableGrid : GridSystem<Matchable>
         yield return StartCoroutine(toBeSwapped[1].SwapToPosition(pos1));
     }
 
+    private Match GetPowerUpMatch(Matchable matchable)
+    {
+        Match match = null;
+        switch (matchable.getPowerType) 
+        {
+            case PowerType.match4horizontal:
+                match = GetHorizontalMatch(matchable);
+                break;
+            case PowerType.match4vertical:
+                match = GetVerticalMatch(matchable);
+                break;
+            case PowerType.match5:
+
+                break;
+            case PowerType.cross:
+                match = GetDiagonalMatch(matchable);
+                break;
+            default:
+                break;
+        }
+        return match;
+    }
+
+    private Match GetVerticalMatch(Matchable matchable)
+    {
+        Match match = new Match(matchable);
+        for (int y = 0; y < Dimensions.y; y++)
+        {
+            Matchable newMatchable = GetItemFromGrid(new Vector2Int(matchable.position.x, y));
+            if (!isEmpty(new Vector2Int(matchable.position.x, y)) && newMatchable.Idle && newMatchable.getPowerType == PowerType.none) 
+            { 
+                match.AddMatchable(newMatchable);
+            }
+        }
+        return match;
+    }
+
+    private Match GetHorizontalMatch(Matchable matchable)
+    {
+        Match match = new Match(matchable);
+        for (int x = 0; x < Dimensions.x; x++)
+        {
+            Matchable newMatchable = GetItemFromGrid(new Vector2Int(x, matchable.position.y));
+            if (!isEmpty(new Vector2Int(x, matchable.position.y)) && newMatchable.Idle && newMatchable.getPowerType == PowerType.none)
+            {
+                match.AddMatchable(newMatchable);
+            }
+        }
+        return match;
+    }
+
+    private Match GetDiagonalMatch(Matchable matchable)
+    {
+        Match match = new Match(matchable);
+        for (int y = 0; y < Dimensions.y; y++)
+        {
+            for (int x = 0; x < Dimensions.x; x++)
+            {
+                if (Math.Abs(x-matchable.position.x) == Math.Abs(y-matchable.position.y))
+                {
+                    Matchable newMatchable = GetItemFromGrid(new Vector2Int(x, y));
+                    if (!isEmpty(new Vector2Int(x, y)) && newMatchable.Idle && newMatchable.getPowerType == PowerType.none)
+                    {
+                        match.AddMatchable(newMatchable);
+                    }
+                }
+
+            }
+        }
+        return match;
+    }
+
     private void CollapseGrid()
     {
         for (int x = 0; x < Dimensions.x; x++)
@@ -277,7 +423,7 @@ public class MatchableGrid : GridSystem<Matchable>
 
                     Matchable matchable = GetItemFromGrid(new Vector2Int(x, y));
                         
-                    if (!matchable.Idle)
+                    if (!matchable.Idle || matchable.getPowerType != PowerType.none)
                         continue;
 
                     Match match = GetMatch(matchable);
@@ -285,7 +431,7 @@ public class MatchableGrid : GridSystem<Matchable>
                     if (match != null)
                     {
                         hasAMatch = true;
-                        StartCoroutine(scoreManager.ResolveMatch(match));
+                        StartCoroutine(scoreManager.ResolveMatch(match, false));
                     }
                 }
 
