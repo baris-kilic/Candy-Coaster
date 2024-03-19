@@ -6,6 +6,7 @@ public class MatchablePool : ObjectPool<Matchable>
 {
     [SerializeField] private int howManyTypes;
     [SerializeField] private Sprite[] sprites;
+    public bool allowSwap = true;
 
     [SerializeField] private Sprite crossPowerUp;
     [SerializeField] private Sprite match4PowerUp;
@@ -31,15 +32,22 @@ public class MatchablePool : ObjectPool<Matchable>
         return nextType;
     }
 
-    public void setPowerUpForMatchable(Matchable matchable, PowerType powerType)
+    public Matchable setPowerUpForMatchable(Matchable matchable, PowerType powerType)
     {
         if (powerType == PowerType.match4)
-            matchable.setPowerUp(match4PowerUp, powerType);
+            return matchable.setPowerUp(match4PowerUp, powerType);
         
         else if (powerType == PowerType.match5)
-            matchable.setPowerUp(match5PowerUp, powerType);
+            return matchable.setPowerUp(match5PowerUp, powerType);
         
         else if (powerType == PowerType.cross)
-            matchable.setPowerUp(crossPowerUp, powerType);
+            return matchable.setPowerUp(crossPowerUp, powerType);
+
+        return matchable;
+    }
+
+    public void ChangeType(Matchable matchable, int v)
+    {
+        matchable.SetType(v, sprites[v]);
     }
 }

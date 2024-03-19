@@ -33,8 +33,8 @@ public class MatchableGrid : GridSystem<Matchable>
                     newMatchable = pool.GetRandomMatchable();
                     //newMatchable.transform.position = transform.position + new Vector3(x, y);
                     newMatchable.transform.position = transform.position + new Vector3(x, y) + offScreenOffset;
-                    newMatchable.position = new Vector2Int(x, y);
                     newMatchable.gameObject.SetActive(true);
+                    newMatchable.position = new Vector2Int(x, y);
                     PutItemOnGrid(new Vector2Int(x, y), newMatchable);
 
 
@@ -59,11 +59,11 @@ public class MatchableGrid : GridSystem<Matchable>
         for (int i = 0; i < newMatchables.Count; i++)
         {
             if (i == newMatchables.Count - 1)
-                yield return StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y), false));
+                yield return StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y)));
             else
-                StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y), false));
+                StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y)));
             if (initialPopulation)
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -120,6 +120,7 @@ public class MatchableGrid : GridSystem<Matchable>
 
     public IEnumerator TrySwap(Matchable[] toBeSwapped)
     {
+        pool.allowSwap = false;
         Matchable[] copies = new Matchable[2];
         copies[0] = toBeSwapped[0];
         copies[1] = toBeSwapped[1];
@@ -144,6 +145,9 @@ public class MatchableGrid : GridSystem<Matchable>
             if (ScanForMatches())
             {
                 StartCoroutine(FindAndScanForMatches());
+            } else
+            {
+                pool.allowSwap = true;
             }
         }
             
@@ -160,6 +164,9 @@ public class MatchableGrid : GridSystem<Matchable>
         if (ScanForMatches())
         {
             StartCoroutine(FindAndScanForMatches());
+        } else
+        {
+            pool.allowSwap = true;
         }
     }
 
@@ -223,12 +230,9 @@ public class MatchableGrid : GridSystem<Matchable>
         Vector3 pos1 = toBeSwapped[0].transform.position;
         Vector3 pos2 = toBeSwapped[1].transform.position;
 
-        Coroutine swap1 = StartCoroutine(toBeSwapped[0].SwapToPosition(pos2));
-        Coroutine swap2 = StartCoroutine(toBeSwapped[1].SwapToPosition(pos1));
-
         // Wait for both coroutines to finish
-        yield return swap1;
-        yield return swap2;
+                     StartCoroutine(toBeSwapped[0].SwapToPosition(pos2));
+        yield return StartCoroutine(toBeSwapped[1].SwapToPosition(pos1));
     }
 
     private void CollapseGrid()
@@ -258,7 +262,7 @@ public class MatchableGrid : GridSystem<Matchable>
         RemoveItemFromGrid(matchable.position);
         PutItemOnGrid(pos, matchable);
         matchable.position = pos;
-        StartCoroutine(matchable.SwapToPosition(transform.position + new Vector3 (pos.x, pos.y)));
+        StartCoroutine(matchable.MoveToPosition(transform.position + new Vector3 (pos.x, pos.y)));
     }
 
     private bool ScanForMatches()

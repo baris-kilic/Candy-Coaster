@@ -10,6 +10,9 @@ public class Cursor : Singleton<Cursor>
     private Matchable[] selected;
 
     private MatchableGrid grid;
+    private MatchablePool pool;
+
+    public bool cheatMode;
 
     protected override void Init()
     {
@@ -50,8 +53,36 @@ public class Cursor : Singleton<Cursor>
     private void Start()
     {
         grid = (MatchableGrid)MatchableGrid.Instance;
+        pool = (MatchablePool)MatchablePool.Instance;
     }
 
+    private void Update()
+    {
+        if (!cheatMode || selected[0] == null)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            pool.ChangeType(selected[0], 0);
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            pool.ChangeType(selected[0], 1);
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            pool.ChangeType(selected[0], 2);
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+            pool.ChangeType(selected[0], 3);
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+            pool.ChangeType(selected[0], 4);
+
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+            pool.ChangeType(selected[0], 5);
+
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+            pool.ChangeType(selected[0], 6);
+
+    }
     private bool SelectedAreAdjacent()
     {
         if (selected[0].position.x == selected[1].position.x)

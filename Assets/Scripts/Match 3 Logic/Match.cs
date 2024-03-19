@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public enum Orientation
@@ -13,6 +14,7 @@ public enum Orientation
 public enum PowerType
 {
     none,
+    match3,
     match4,
     match5,
     cross,
@@ -25,6 +27,22 @@ public class Match
     private List<Matchable> matchables;
     private Matchable toPowerUp = null;
 
+    public PowerType Type 
+    {
+        get 
+        {
+            if (orientation == Orientation.both)
+                return PowerType.cross;
+            else if (matchables.Count > 4)
+                return PowerType.match5;
+            else if (matchables.Count == 4)
+                return PowerType.match4;
+            else if (matchables.Count == 3)
+                return PowerType.match3;
+            else
+                return PowerType.none;
+        }
+    }
     public Matchable getPowerUpMatchable 
     {  
         get 

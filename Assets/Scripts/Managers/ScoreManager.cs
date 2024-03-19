@@ -16,11 +16,11 @@ public class ScoreManager : Singleton<ScoreManager>
 
     private int score;
 
-    public int Score {  get { return score; } }
+    public int Score { get { return score; } }
 
     protected override void Init()
     {
-        scoreText = GetComponent<Text>();   
+        scoreText = GetComponent<Text>();
     }
     private void Start()
     {
@@ -42,19 +42,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
         if (toResolve.Count > 3)
         {
-            powerUpMatchable = toResolve.getPowerUpMatchable;
-            if (toResolve.Orientation == Orientation.both)
-            {
-                pool.setPowerUpForMatchable(toResolve.getPowerUpMatchable, PowerType.cross);
-            }
-            else if (toResolve.Orientation == Orientation.horizontal || toResolve.Orientation == Orientation.vertical && toResolve.Count == 4)
-            {
-                pool.setPowerUpForMatchable(toResolve.getPowerUpMatchable, PowerType.match4);
-            }
-            else if (toResolve.Orientation == Orientation.horizontal || toResolve.Orientation == Orientation.vertical && toResolve.Count == 5)
-            {
-                pool.setPowerUpForMatchable(toResolve.getPowerUpMatchable, PowerType.match5);
-            }
+            powerUpMatchable = pool.setPowerUpForMatchable(toResolve.getPowerUpMatchable, toResolve.Type);
             toResolve.RemoveMatchable(powerUpMatchable);
             targetPoint = powerUpMatchable.transform;
             powerUpMatchable.spriteRenderer.sortingOrder = 3;
@@ -71,7 +59,7 @@ public class ScoreManager : Singleton<ScoreManager>
                 targetPoint = powerUpMatchable.transform;
                 isPowerUp = true;
             }
-               
+
             if (i == toResolve.Count - 1)
             {
                 yield return StartCoroutine(matchable.Resolve(targetPoint, isPowerUp));
@@ -80,7 +68,7 @@ public class ScoreManager : Singleton<ScoreManager>
             {
                 StartCoroutine(matchable.Resolve(targetPoint, isPowerUp));
             }
-            
+
         }
 
         AddScore(toResolve.Count * toResolve.Count);

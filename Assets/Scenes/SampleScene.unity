@@ -293,7 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6192201575914624180, guid: 1de6951cfaba69748a04ea27643de8cc, type: 3}
-  howManyTypes: 3
+  howManyTypes: 5
   sprites:
   - {fileID: 21300000, guid: e63cf0fbcddf4194da2066df3fbb09dd, type: 3}
   - {fileID: 21300000, guid: 9576b9a8e95e1e842ab130637bc5f630, type: 3}
@@ -302,7 +302,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0a8480fdd58eae645bf74efc3eef1280, type: 3}
   - {fileID: 21300000, guid: 67995fe10dad89b4ab98af7c56a8bed9, type: 3}
   - {fileID: 21300000, guid: dc3c0743107da66448ce61287c051f8e, type: 3}
+  allowSwap: 1
+  crossPowerUp: {fileID: 21300000, guid: 6fa6f6984a02c564b88527f5345ac0fb, type: 3}
   match4PowerUp: {fileID: 21300000, guid: eea9578f49fd00443b1715df379e4dd1, type: 3}
+  match5PowerUp: {fileID: 21300000, guid: 9829abb5309de184fb9df3741767868e, type: 3}
 --- !u!4 &573472605
 Transform:
   m_ObjectHideFlags: 0
@@ -824,6 +827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9803142d9a3f7c458d353e82a018dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cheatMode: 1
 --- !u!212 &1987836300
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -866,7 +870,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4807fc75b5d1c6d4f8bdfb1af2b5a473, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1

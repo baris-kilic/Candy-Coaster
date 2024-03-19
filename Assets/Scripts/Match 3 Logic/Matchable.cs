@@ -43,32 +43,36 @@ public class Matchable : Movable
     {
         spriteRenderer.sortingOrder = 2;
 
-        yield return StartCoroutine(MoveToPosition(collectionPoint.position, isPowerUp));
+        yield return StartCoroutine(MoveToPositionTween(collectionPoint.position, isPowerUp));
 
         spriteRenderer.sortingOrder = 1;
         pool.ReturnObjectToPool(this);
     }
 
-    public void setPowerUp(Sprite sprite, PowerType powerType)
+    public Matchable setPowerUp(Sprite sprite, PowerType powerType)
     {
-
+        this.powerType = powerType;
         spriteRenderer.sprite = sprite;
         hasPowerUp = true;
+        return this;
     }
 
     private void OnMouseDown()
     {
-        cursor.SelectFirst(this);
+        if (pool.allowSwap)
+            cursor.SelectFirst(this);
     }
 
     private void OnMouseUp()
     {
-        cursor.SelectFirst(null);
+        if (pool.allowSwap)
+            cursor.SelectFirst(null);
     }
 
     private void OnMouseEnter()
     {
-        cursor.SelectSecond(this);
+        if (pool.allowSwap)
+            cursor.SelectSecond(this);
     }
 
     public override string ToString()
