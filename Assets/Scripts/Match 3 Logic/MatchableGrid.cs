@@ -131,6 +131,39 @@ public class MatchableGrid : GridSystem<Matchable>
 
         yield return StartCoroutine(Swap(copies));
 
+        if (copies[0].getPowerType == PowerType.match5)
+        {
+            Match candyMatch = null;
+            if (copies[1].getPowerType != PowerType.match5)
+            {
+                candyMatch = GetMatchesByType(copies[1]);
+            } else
+            {
+                candyMatch = GetEverything(copies[1]);
+            }
+            candyMatch.AddMatchable(copies[0]);
+            StartCoroutine(scoreManager.ResolveMatch(candyMatch,true));
+            StartCoroutine(FindAndScanForMatches());
+            yield break;
+        }
+
+        if (copies[1].getPowerType == PowerType.match5)
+        {
+            Match candyMatch = null;
+            if (copies[0].getPowerType != PowerType.match5)
+            {
+                candyMatch = GetMatchesByType(copies[0]);
+            }
+            else
+            {
+                candyMatch = GetEverything(copies[0]);
+            }
+            candyMatch.AddMatchable(copies[1]);
+            StartCoroutine(scoreManager.ResolveMatch(candyMatch, true));
+            StartCoroutine(FindAndScanForMatches());
+            yield break;
+        }
+
         if (copies[0].getPowerType != PowerType.none)
         {
             powerUpMatch1 = true;
@@ -376,6 +409,40 @@ public class MatchableGrid : GridSystem<Matchable>
                     }
                 }
 
+            }
+        }
+        return match;
+    }
+
+    private Match GetMatchesByType(Matchable matchable)
+    {
+        Match match = new Match(matchable);
+        for (int y = 0; y < Dimensions.y; y++)
+        {
+            for (int x = 0; x < Dimensions.x; x++)
+            {
+                Matchable newMatchable = GetItemFromGrid(new Vector2Int(x, y));
+                if (!isEmpty(new Vector2Int(x, y)) && newMatchable.Idle && newMatchable.getPowerType == PowerType.none && matchable.Type == newMatchable.Type)
+                {
+                    match.AddMatchable(newMatchable);
+                }
+            }
+        }
+        return match;
+    }
+
+    private Match GetEverything(Matchable matchable)
+    {
+        Match match = new Match(matchable);
+        for (int y = 0; y < Dimensions.y; y++)
+        {
+            for (int x = 0; x < Dimensions.x; x++)
+            {
+                Matchable newMatchable = GetItemFromGrid(new Vector2Int(x, y));
+                if (!isEmpty(new Vector2Int(x, y)) && newMatchable.Idle && newMatchable.getPowerType == PowerType.none)
+                {
+                    match.AddMatchable(newMatchable);
+                }
             }
         }
         return match;
