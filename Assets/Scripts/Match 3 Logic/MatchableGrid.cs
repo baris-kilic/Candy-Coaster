@@ -13,7 +13,10 @@ public class MatchableGrid : GridSystem<Matchable>
     private ScoreManager scoreManager;
 
     [SerializeField] private Vector3 offScreenOffset;
-    
+
+    [SerializeField]
+    private List<Matchable> possibleMoves;
+
     private void Start()
     {
         pool = (MatchablePool)MatchablePool.Instance;
@@ -59,7 +62,8 @@ public class MatchableGrid : GridSystem<Matchable>
         for (int i = 0; i < newMatchables.Count; i++)
         {
             if (i == newMatchables.Count - 1)
-                yield return StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y)));
+                yield return StartCoroutine(newMatchables[i].MoveToPosition(transform.position + 
+                    new Vector3(newMatchables[i].position.x, newMatchables[i].position.y)));
             else
                 StartCoroutine(newMatchables[i].MoveToPosition(transform.position + new Vector3(newMatchables[i].position.x, newMatchables[i].position.y)));
             if (initialPopulation)
@@ -85,7 +89,8 @@ public class MatchableGrid : GridSystem<Matchable>
 
         Vector2Int position = toMatch.position + direction;
 
-        while (CheckBound(position) && !isEmpty(position) && GetItemFromGrid(position).Type == toMatch.Type)
+        while (CheckBound(position) && !isEmpty(position) && GetItemFromGrid(position).Type == toMatch.Type 
+            && GetItemFromGrid(position).getPowerType == PowerType.none)
         {
             matches++;
             position += direction;
@@ -128,6 +133,8 @@ public class MatchableGrid : GridSystem<Matchable>
         Matchable[] copies = new Matchable[2];
         copies[0] = toBeSwapped[0];
         copies[1] = toBeSwapped[1];
+
+        Hint.Instance.CancelHint();
 
         yield return StartCoroutine(Swap(copies));
 
@@ -273,9 +280,22 @@ public class MatchableGrid : GridSystem<Matchable>
             StartCoroutine(FindAndScanForMatches());
         } else
         {
+            CheckForMoves();
             pool.allowSwap = true;
         }
     }
+
+    public void CheckForMoves()
+    {
+        if (ScanForMoves() == 0)
+        {
+            GameManager.Instance.NoMoreMoves();
+        }
+        else
+        {
+            Hint.Instance.IndicateHint(possibleMoves[UnityEngine.Random.Range(0, possibleMoves.Count)].transform);
+        }
+     }
 
     private Match GetMatch(Matchable matchable)
     {
@@ -422,7 +442,8 @@ public class MatchableGrid : GridSystem<Matchable>
             for (int x = 0; x < Dimensions.x; x++)
             {
                 Matchable newMatchable = GetItemFromGrid(new Vector2Int(x, y));
-                if (!isEmpty(new Vector2Int(x, y)) && newMatchable.Idle && newMatchable.getPowerType == PowerType.none && matchable.Type == newMatchable.Type)
+                if (!isEmpty(new Vector2Int(x, y)) && newMatchable.Idle && newMatchable.getPowerType == PowerType.none 
+                    && matchable.Type == newMatchable.Type)
                 {
                     match.AddMatchable(newMatchable);
                 }
@@ -506,4 +527,101 @@ public class MatchableGrid : GridSystem<Matchable>
         }
         return hasAMatch;
     }
+
+    private int ScanForMoves()
+    {
+        possibleMoves = new List<Matchable>();
+        bool hasAMatch = false;
+
+        for (int y = 0; y < Dimensions.y; y++)
+        {
+            for (int x = 0; x < Dimensions.x; x++)
+            {
+                Matchable newMatchable = GetItemFromGrid(new Vector2Int(x, y));
+                if (CheckBound(new Vector2Int(x, y)) && !isEmpty(new Vector2Int(x, y)) && 
+                    newMatchable.getPowerType == PowerType.none && CanMove(newMatchable))
+                {
+                    hasAMatch = true;
+                    possibleMoves.Add(newMatchable);
+                } else if (CheckBound(new Vector2Int(x, y)) && !isEmpty(new Vector2Int(x, y)) &&
+                    newMatchable.getPowerType != PowerType.none && !hasAMatch)
+                {
+                    possibleMoves.Add(newMatchable);
+                }
+            }
+        }
+        return possibleMoves.Count;
+    }
+
+    private bool CanMove(Matchable newMatchable)
+    {
+        if (CanMoveWithDirection(newMatchable, Vector2Int.up))
+            return true;
+        else if (CanMoveWithDirection(newMatchable, Vector2Int.down))
+            return true;
+        else if(CanMoveWithDirection(newMatchable, Vector2Int.left))
+            return true;
+        else if(CanMoveWithDirection(newMatchable, Vector2Int.right))
+            return true;
+        return false;
+    }
+
+    private bool CanMoveWithDirection(Matchable newMatchable, Vector2Int direction)
+    {
+        int matchableType = newMatchable.Type;
+        int upperMatchCount = 0;
+        int lowerMatchCount = 0;
+        int leftMatchCount = 0;
+        int rightMatchCount = 0;
+        if (CheckBound(newMatchable.position + Vector2Int.up))
+            upperMatchCount = CountMatchesInDirectionWithPosition(newMatchable.position + direction, Vector2Int.up, matchableType);
+        if (CheckBound(newMatchable.position + Vector2Int.down))
+            lowerMatchCount = CountMatchesInDirectionWithPosition(newMatchable.position + direction, Vector2Int.down, matchableType);
+        if (CheckBound(newMatchable.position + Vector2Int.left))
+            leftMatchCount = CountMatchesInDirectionWithPosition(newMatchable.position + direction, Vector2Int.left, matchableType);
+        if (CheckBound(newMatchable.position + Vector2Int.right))
+            rightMatchCount = CountMatchesInDirectionWithPosition(newMatchable.position + direction, Vector2Int.right, matchableType);
+        
+        if (direction == Vector2Int.up)
+        {
+            if (upperMatchCount == 2 || (leftMatchCount >= 1 && rightMatchCount >= 1) || (leftMatchCount == 2) || (rightMatchCount == 2))
+                return true;
+        }
+        else if (direction == Vector2Int.down)
+        {
+            if (lowerMatchCount == 2 || (leftMatchCount >= 1 && rightMatchCount >= 1) || (leftMatchCount == 2) || (rightMatchCount == 2))
+                return true;
+        }
+        else if (direction == Vector2Int.left)
+        {
+            if (leftMatchCount == 2 || (upperMatchCount >= 1 && lowerMatchCount >= 1) || (upperMatchCount == 2) || (lowerMatchCount == 2))
+                return true;
+        }
+        else if (direction == Vector2Int.right)
+        {
+            if (rightMatchCount == 2 || (upperMatchCount >= 1 && lowerMatchCount >= 1) || (upperMatchCount == 2) || (lowerMatchCount == 2))
+                return true;
+        }
+
+        return false;
+    }
+
+    private int CountMatchesInDirectionWithPosition(Vector2Int position, Vector2Int direction, int matchType)
+    {
+        int matches = 0;
+
+        Vector2Int checkPosition = position + direction;
+
+        while (CheckBound(checkPosition) && !isEmpty(checkPosition) && GetItemFromGrid(checkPosition).Type == matchType 
+            && GetItemFromGrid(checkPosition).getPowerType == PowerType.none)
+        {
+            //Debug.Log("In While Loop for " + position + " Direction :" + direction + "Match Type: " + matchType);
+            matches++;
+            checkPosition += direction;
+        }
+
+        return matches;
+    }
+
+
 }
