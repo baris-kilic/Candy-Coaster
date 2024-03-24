@@ -11,6 +11,7 @@ public class MatchableGrid : GridSystem<Matchable>
 {
     private MatchablePool pool;
     private ScoreManager scoreManager;
+    private AudioManager audioManager;
 
     [SerializeField] private Vector3 offScreenOffset;
 
@@ -20,6 +21,7 @@ public class MatchableGrid : GridSystem<Matchable>
     private void Start()
     {
         pool = (MatchablePool)MatchablePool.Instance;
+        audioManager = AudioManager.Instance;
         scoreManager = ScoreManager.Instance;
     }
 
@@ -61,6 +63,8 @@ public class MatchableGrid : GridSystem<Matchable>
 
         for (int i = 0; i < newMatchables.Count; i++)
         {
+            if (initialPopulation)
+                StartCoroutine(audioManager.PlayDelayedSound(SoundEffects.land, 0.8f));
             if (i == newMatchables.Count - 1)
                 yield return StartCoroutine(newMatchables[i].MoveToPosition(transform.position + 
                     new Vector3(newMatchables[i].position.x, newMatchables[i].position.y)));
@@ -357,8 +361,9 @@ public class MatchableGrid : GridSystem<Matchable>
         Vector3 pos1 = toBeSwapped[0].transform.position;
         Vector3 pos2 = toBeSwapped[1].transform.position;
 
+        audioManager.PlaySound(SoundEffects.swap);
         // Wait for both coroutines to finish
-                     StartCoroutine(toBeSwapped[0].SwapToPosition(pos2));
+        StartCoroutine(toBeSwapped[0].SwapToPosition(pos2));
         yield return StartCoroutine(toBeSwapped[1].SwapToPosition(pos1));
     }
 
@@ -396,6 +401,7 @@ public class MatchableGrid : GridSystem<Matchable>
                 match.AddMatchable(newMatchable);
             }
         }
+        audioManager.PlaySound(SoundEffects.powerup);
         return match;
     }
 
@@ -410,6 +416,7 @@ public class MatchableGrid : GridSystem<Matchable>
                 match.AddMatchable(newMatchable);
             }
         }
+        audioManager.PlaySound(SoundEffects.powerup);
         return match;
     }
 
@@ -431,6 +438,7 @@ public class MatchableGrid : GridSystem<Matchable>
 
             }
         }
+        audioManager.PlaySound(SoundEffects.powerup);
         return match;
     }
 
@@ -449,6 +457,7 @@ public class MatchableGrid : GridSystem<Matchable>
                 }
             }
         }
+        audioManager.PlaySound(SoundEffects.powerup);
         return match;
     }
 
@@ -466,6 +475,7 @@ public class MatchableGrid : GridSystem<Matchable>
                 }
             }
         }
+        audioManager.PlaySound(SoundEffects.powerup);
         return match;
     }
 

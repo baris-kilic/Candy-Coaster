@@ -30,7 +30,7 @@ public class Hint : Singleton<Hint>
     private IEnumerator ShowHint(Transform location)
     {
         // Wait for the delay
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(6f);
 
         // Perform the operation after the delay
         transform.position = location.position;
