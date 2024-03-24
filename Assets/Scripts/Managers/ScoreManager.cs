@@ -10,6 +10,7 @@ public class ScoreManager : Singleton<ScoreManager>
     private Text scoreText;
     private MatchableGrid grid;
     private MatchablePool pool;
+    private AudioManager audioManager;
 
     [SerializeField]
     private Transform collectionPoint;
@@ -26,6 +27,7 @@ public class ScoreManager : Singleton<ScoreManager>
     {
         pool = (MatchablePool)MatchablePool.Instance;
         grid = (MatchableGrid)MatchableGrid.Instance;
+        audioManager = AudioManager.Instance;
     }
     public void AddScore(int amount)
     {
@@ -46,6 +48,11 @@ public class ScoreManager : Singleton<ScoreManager>
             toResolve.RemoveMatchable(powerUpMatchable);
             targetPoint = powerUpMatchable.transform;
             powerUpMatchable.spriteRenderer.sortingOrder = 3;
+
+            audioManager.PlaySound(SoundEffects.upgrade);
+        } else
+        {
+            audioManager.PlaySound(SoundEffects.resolve);
         }
 
         for (int i = 0; i != toResolve.Count; i++)
@@ -71,6 +78,7 @@ public class ScoreManager : Singleton<ScoreManager>
         }
 
         AddScore(toResolve.Count * toResolve.Count);
+        
         if (powerUpMatchable != null)
             powerUpMatchable.spriteRenderer.sortingOrder = 1;
         yield return null;

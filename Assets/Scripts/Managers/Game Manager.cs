@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     private MatchablePool pool;
     private AudioManager audioManager;
     private Cursor cursor;
+    private CameraScript cameraScript;
 
     [SerializeField] private Fader loadingScreen;
     [SerializeField] private Vector2Int dimensions;
@@ -21,6 +22,7 @@ public class GameManager : Singleton<GameManager>
         grid = (MatchableGrid) MatchableGrid.Instance;
         audioManager = AudioManager.Instance;
         cursor = Cursor.Instance;
+        cameraScript = CameraScript.Instance;
         
         Debug.Log(dimensions);
         
@@ -35,10 +37,11 @@ public class GameManager : Singleton<GameManager>
         loadingScreen.Hide(false);
 
         pool.PoolObjects(dimensions.x * dimensions.y * 2);
+        cameraScript.ArrangeCam(new Vector2Int(dimensions.x, dimensions.y));
         grid.InitGridSystem(dimensions);
 
         StartCoroutine(loadingScreen.Fade(0));
-        audioManager.PlayMusic();
+        //audioManager.PlayMusic();
         
         yield return null;
         yield return StartCoroutine(grid.PopulateGrid(false, true));
