@@ -94,12 +94,15 @@ public class GameManager : Singleton<GameManager>
         {
             audioManager.PlaySound(SoundEffects.win);
             resultText.text = "Congratulations";
+            int levelNumber = PlayerPrefs.GetInt("levelNumber") + 1;
+            PlayerPrefs.SetInt("level" + levelNumber, 5);
         } else
         {
             audioManager.PlaySound(SoundEffects.lose);
             resultText.text = "No More Moves";
         }
         scoreText.text = "Score : " + scoreManager.Score.ToString();
+        PlayerPrefs.SetInt(("level" + PlayerPrefs.GetInt("levelNumber") + "highest"), scoreManager.Score);
         cursor.enabled = false;
 
         darkener.Hide(false);
