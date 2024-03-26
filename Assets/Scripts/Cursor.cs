@@ -56,6 +56,12 @@ public class Cursor : Singleton<Cursor>
         pool = (MatchablePool)MatchablePool.Instance;
     }
 
+    public void Reset()
+    {
+        SelectFirst(null);
+        spriteRenderer.enabled = false;
+    }
+
     private void Update()
     {
         if (!cheatMode || selected[0] == null)

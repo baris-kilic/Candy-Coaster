@@ -6,6 +6,7 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MatchableGrid : GridSystem<Matchable>
 {
@@ -23,6 +24,21 @@ public class MatchableGrid : GridSystem<Matchable>
         pool = (MatchablePool)MatchablePool.Instance;
         audioManager = AudioManager.Instance;
         scoreManager = ScoreManager.Instance;
+    }
+
+    public IEnumerator Reset()
+    {
+        for (int y = 0; y < Dimensions.y; y++)
+        {
+            for (int x = 0; x < Dimensions.x; x++)
+            {
+                if (!isEmpty(new Vector2Int(x, y)))
+                {
+                    pool.ReturnObjectToPool(RemoveItemFromGrid(new Vector2Int(x, y)));
+                }
+            }
+        }
+        yield return StartCoroutine(PopulateGrid(false,true));
     }
 
     public IEnumerator PopulateGrid(bool allowMatches = false, bool initialPopulation = false)
@@ -154,6 +170,7 @@ public class MatchableGrid : GridSystem<Matchable>
             }
             candyMatch.AddMatchable(copies[0]);
             StartCoroutine(scoreManager.ResolveMatch(candyMatch,true));
+            UpdateCount();
             StartCoroutine(FindAndScanForMatches());
             yield break;
         }
@@ -171,6 +188,7 @@ public class MatchableGrid : GridSystem<Matchable>
             }
             candyMatch.AddMatchable(copies[1]);
             StartCoroutine(scoreManager.ResolveMatch(candyMatch, true));
+            UpdateCount();
             StartCoroutine(FindAndScanForMatches());
             yield break;
         }
@@ -271,6 +289,7 @@ public class MatchableGrid : GridSystem<Matchable>
             
         else
         {
+            UpdateCount();
             StartCoroutine(FindAndScanForMatches());
         }    
     }
@@ -291,7 +310,7 @@ public class MatchableGrid : GridSystem<Matchable>
 
     public void CheckForMoves()
     {
-        if (ScanForMoves() == 0)
+        if (ScanForMoves() == 0 || GameManager.Instance.MoveCount == 0)
         {
             GameManager.Instance.NoMoreMoves();
         }
@@ -365,6 +384,11 @@ public class MatchableGrid : GridSystem<Matchable>
         // Wait for both coroutines to finish
         StartCoroutine(toBeSwapped[0].SwapToPosition(pos2));
         yield return StartCoroutine(toBeSwapped[1].SwapToPosition(pos1));
+    }
+
+    public void UpdateCount()
+    {
+        GameManager.Instance.SetMoveCount(GameManager.Instance.MoveCount - 1);
     }
 
     private Match GetPowerUpMatch(Matchable matchable)
@@ -632,6 +656,4 @@ public class MatchableGrid : GridSystem<Matchable>
 
         return matches;
     }
-
-
 }

@@ -23,6 +23,13 @@ public class ScoreManager : Singleton<ScoreManager>
     {
         scoreText = GetComponent<Text>();
     }
+
+    public void Reset()
+    {
+        score = 0;
+        scoreText.text = "Score: " + score.ToString();
+    }
+
     private void Start()
     {
         pool = (MatchablePool)MatchablePool.Instance;
@@ -78,9 +85,9 @@ public class ScoreManager : Singleton<ScoreManager>
         }
 
         AddScore(toResolve.Count * toResolve.Count);
-        
         if (powerUpMatchable != null)
             powerUpMatchable.spriteRenderer.sortingOrder = 1;
         yield return null;
     }
+
 }

@@ -9,7 +9,9 @@ public enum SoundEffects
     resolve,
     upgrade,
     powerup,
-    score
+    score,
+    win,
+    lose
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -18,17 +20,6 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField]
     private AudioSource music,
                         soundEffects;
-    [
-        Header 
-        (
-            "0 = land\n" +
-            "1 = swap\n" +
-            "2 = resolve\n" +
-            "3 = upgrade\n" +
-            "4 = powerup\n" +
-            "5 = score\n"
-        )
-    ]
 
     [SerializeField]
     private AudioClip backgroundMusic;
@@ -47,6 +38,11 @@ public class AudioManager : Singleton<AudioManager>
     public void PlayMusic()
     {
         music.Play();
+    }
+
+    public void StopMusic()
+    {
+        music.Stop();
     }
 
     public void PauseMusic(bool pause)
