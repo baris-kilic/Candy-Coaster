@@ -16,6 +16,8 @@ public class Hint : Singleton<Hint>
 
     public void IndicateHint(Transform location)
     {
+        if (PlayerPrefs.GetInt("Hint") == 2)
+            return;
         // Check if a hint coroutine is already running
         if (hintCoroutine != null)
         {
@@ -39,6 +41,8 @@ public class Hint : Singleton<Hint>
 
     public void CancelHint()
     {
+        if (PlayerPrefs.GetInt("Hint") == 2)
+            return;
         // Check if a hint coroutine is running
         if (hintCoroutine != null)
         {

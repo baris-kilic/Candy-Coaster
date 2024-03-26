@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,8 +13,16 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private Movable levelMenu;
 
+    [SerializeField]
+    private Movable settingsMenu;
+
+    private AudioManager audioManager;
+
     private void Start()
     {
+        audioManager = AudioManager.Instance;
+        if (PlayerPrefs.GetInt("Music") != 2)
+            audioManager.PlayMusic();
         loadingScreen.Hide(false);
         StartCoroutine(loadingScreen.Fade(0));
     }
@@ -55,6 +64,8 @@ public class MenuManager : MonoBehaviour
 
     private void SetLevelInfo(int levelNumber)
     {
+        int targetScore = GetTargetScore(levelNumber);
+        int moveCount = GetLevelMoves(levelNumber);
         string levelName = "Level" + levelNumber;
         Transform level = levelMenu.gameObject.transform.Find(levelName);
         Button playButton = level.gameObject.transform.Find("Play Button(Unlocked)").GetComponent<Button>();
@@ -63,13 +74,13 @@ public class MenuManager : MonoBehaviour
         Text levelScore = level.Find("Score Info").GetComponent<Text>();
 
         // Set level name
-        levelText.text = "Level " + levelNumber + " - " + GetLevelMoves(levelNumber) + " Moves";
+        levelText.text = "Level " + levelNumber + " - " + moveCount + " Moves";
 
         playButton.onClick.AddListener(() =>
         {
             // Your code here for handling button click
             Debug.Log("Level " + levelNumber + " button clicked!");
-            StartCoroutine(LoadPlayScene(18, 450, 1));
+            StartCoroutine(LoadPlayScene(moveCount, targetScore, levelNumber));
         });
 
         // Check if the level is locked or unlocked
@@ -83,8 +94,7 @@ public class MenuManager : MonoBehaviour
         else
         {
             // If unlocked
-            int highestScore = PlayerPrefs.GetInt("level" + levelNumber + "highest", 0);
-            int targetScore = GetTargetScore(levelNumber);
+            int highestScore = PlayerPrefs.GetInt("level" + levelNumber + "highest", 0);           
             if (highestScore != 0)
             {
                 levelScore.text = "Highest Score: " + highestScore + " - " + " Target Score: " + targetScore;
@@ -125,6 +135,48 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Play");
     }
 
+    public IEnumerator OpenSettingsMenu()
+    {
+        yield return StartCoroutine(settingsMenu.MoveToPosition(new Vector3(0, 0)));
+        Transform musicSettings = settingsMenu.gameObject.transform.Find("Music");
+        Transform hintSettings = settingsMenu.gameObject.transform.Find("Hint");
+        Toggle musicButton = musicSettings.gameObject.transform.Find("Button_sound").gameObject.transform.Find("Toggle").GetComponent<Toggle>();
+        Toggle hintButton = hintSettings.gameObject.transform.Find("Button_hint").gameObject.transform.Find("Toggle").GetComponent<Toggle>();
+        if (PlayerPrefs.GetInt("Music") == 2)
+            musicButton.isOn = true;
+        else
+            musicButton.isOn = false;
+
+        if (PlayerPrefs.GetInt("Hint") == 2)
+            hintButton.isOn = true;
+        else
+            hintButton.isOn = false;
+        musicButton.onValueChanged.AddListener(isOff => {
+            if (isOff)
+            {
+                PlayerPrefs.SetInt("Music", 2);
+                audioManager.StopMusic();
+            }
+            else
+            {
+                PlayerPrefs.SetInt("Music", 1);
+                audioManager.PlayMusic();
+            }
+        });
+
+        hintButton.onValueChanged.AddListener(isOff => {
+            if (isOff)
+            {
+                PlayerPrefs.SetInt("Hint", 2);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("Hint", 1);
+            }
+        });
+
+    }
+
     public void PlayButtonPressed()
     {
         StartCoroutine(StartPlayGame());
@@ -132,16 +184,26 @@ public class MenuManager : MonoBehaviour
 
     public void SettingsButtonPressed()
     {
-        SceneManager.LoadScene("Settings");
+        StartCoroutine(OpenSettingsMenu());
     }
 
     private IEnumerator CloseLevelMenu()
     {
-        yield return StartCoroutine(levelMenu.MoveToPosition(new Vector3(0, -8)));
+        yield return StartCoroutine(levelMenu.MoveToPosition(new Vector3(0, 9)));
     }
 
-    public void CloseButtonPressed()
+    public void CloseButtonPressedForLevel()
     {
         StartCoroutine(CloseLevelMenu());
+    }
+
+    private IEnumerator CloseSettingsMenu()
+    {
+        yield return StartCoroutine(settingsMenu.MoveToPosition(new Vector3(0, -9)));
+    }
+
+    public void CloseButtonPressedForSettings()
+    {
+        StartCoroutine(CloseSettingsMenu());
     }
 }

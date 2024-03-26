@@ -59,6 +59,7 @@ public class GameManager : Singleton<GameManager>
         moveCountText.text = moveCount.ToString();
 
         StartCoroutine(loadingScreen.Fade(0));
+        if (PlayerPrefs.GetInt("Music") != 2)
         audioManager.PlayMusic();
         Debug.Log("TargetScore:" + targetScore);
         Debug.Log("MoveCount:" + moveCount);
@@ -102,7 +103,7 @@ public class GameManager : Singleton<GameManager>
             resultText.text = "No More Moves";
         }
         scoreText.text = "Score : " + scoreManager.Score.ToString();
-        PlayerPrefs.SetInt(("level" + PlayerPrefs.GetInt("levelNumber") + "highest"), scoreManager.Score);
+        PlayerPrefs.SetInt("level" + PlayerPrefs.GetInt("levelNumber") + "highest", scoreManager.Score);
         cursor.enabled = false;
 
         darkener.Hide(false);
@@ -116,7 +117,8 @@ public class GameManager : Singleton<GameManager>
         StartCoroutine(resultsPage.MoveToPosition(new Vector2(0, -15)));
         yield return StartCoroutine(darkener.Fade(0));
         darkener.Hide(true);
-        audioManager.PlayMusic();
+        if (PlayerPrefs.GetInt("Music") != 2)
+            audioManager.PlayMusic();
 
         cursor.Reset();
         scoreManager.Reset();
