@@ -18,6 +18,12 @@ public class MenuManager : MonoBehaviour
 
     private AudioManager audioManager;
 
+    private void Awake()
+    {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 120;
+    }
+
     private void Start()
     {
         audioManager = AudioManager.Instance;
@@ -27,6 +33,7 @@ public class MenuManager : MonoBehaviour
         StartCoroutine(loadingScreen.Fade(0));
     }
 
+    //We initialize our levels and their texts using PlayerPrefs for get user's information about levels.
     private IEnumerator StartPlayGame()
     {
         Transform level1 = levelMenu.gameObject.transform.Find("Level1");
@@ -50,18 +57,12 @@ public class MenuManager : MonoBehaviour
 
         level1Button.onClick.AddListener(() =>
         {
-            // Your code here for handling button click
             Debug.Log("Level 1 button clicked!");
             StartCoroutine(LoadPlayScene(20, 400, 1));
         });
-
-        /*yield return StartCoroutine(loadingScreen.Fade(1));
-        PlayerPrefs.SetInt("moveCount", 20);
-        PlayerPrefs.SetInt("targetScore", 400);
-        PlayerPrefs.SetInt("levelNumber", 1);
-        SceneManager.LoadScene("Play");*/
     }
 
+    //General function for dynamicly set level info after level 1.
     private void SetLevelInfo(int levelNumber)
     {
         int targetScore = GetTargetScore(levelNumber);
@@ -78,12 +79,10 @@ public class MenuManager : MonoBehaviour
 
         playButton.onClick.AddListener(() =>
         {
-            // Your code here for handling button click
             Debug.Log("Level " + levelNumber + " button clicked!");
             StartCoroutine(LoadPlayScene(moveCount, targetScore, levelNumber));
         });
 
-        // Check if the level is locked or unlocked
         if (!PlayerPrefs.HasKey("level" + levelNumber))
         {
             // If locked
@@ -135,6 +134,7 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Play");
     }
 
+    //Using PlayerPrefs for getting user's preferences for settings.
     public IEnumerator OpenSettingsMenu()
     {
         yield return StartCoroutine(settingsMenu.MoveToPosition(new Vector3(0, 0)));
@@ -177,6 +177,7 @@ public class MenuManager : MonoBehaviour
 
     }
 
+    //On click listeners for interactions.
     public void PlayButtonPressed()
     {
         StartCoroutine(StartPlayGame());

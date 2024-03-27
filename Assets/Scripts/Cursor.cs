@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Singleton Cursor Script for choice matchables and swap them.
 [RequireComponent(typeof(SpriteRenderer))]
 public class Cursor : Singleton<Cursor>
 {
@@ -11,8 +12,6 @@ public class Cursor : Singleton<Cursor>
 
     private MatchableGrid grid;
     private MatchablePool pool;
-
-    public bool cheatMode;
 
     protected override void Init()
     {
@@ -36,12 +35,14 @@ public class Cursor : Singleton<Cursor>
         spriteRenderer.enabled = true;
     }
 
+    //Controlling the cursor enabled first, after that, control the selected matchables if they are null or moving, finally control the equality of them.
     public void SelectSecond(Matchable matchable) { 
         selected[1] = matchable;
 
         if (!enabled || selected[0] == null || selected[1] == null || !selected[0].Idle || !selected[1].Idle || selected[0] == selected[1])
             return;
         
+        //If the selected matchables are adjacent, calling TrySwap. After that, we reset the first selected matchable for other swap operations.
         if (SelectedAreAdjacent())
         {
             print("Swapping matchables at positions : (" + selected[0].position.x + ", " + selected[0].position.y + " ) and ( " + selected[1].position.x + ", " + selected[1].position.y);
@@ -62,33 +63,6 @@ public class Cursor : Singleton<Cursor>
         spriteRenderer.enabled = false;
     }
 
-    private void Update()
-    {
-        if (!cheatMode || selected[0] == null)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            pool.ChangeType(selected[0], 0);
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            pool.ChangeType(selected[0], 1);
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            pool.ChangeType(selected[0], 2);
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-            pool.ChangeType(selected[0], 3);
-
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-            pool.ChangeType(selected[0], 4);
-
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-            pool.ChangeType(selected[0], 5);
-
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-            pool.ChangeType(selected[0], 6);
-
-    }
     private bool SelectedAreAdjacent()
     {
         if (selected[0].position.x == selected[1].position.x)

@@ -14,6 +14,7 @@ public enum SoundEffects
     lose
 }
 
+//Singleton AudioManager class for handle sound effects and music.
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : Singleton<AudioManager>
 {

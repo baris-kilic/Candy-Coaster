@@ -37,6 +37,12 @@ public class Matchable : Movable
         spriteRenderer.sprite = sprite;
     }
 
+    /*First, we reset the power type before we send the object to the pool. After, increasing
+     * the sorting order for player can see the resolving animations smoothly. Move the object to
+     * the corresponding position and isPowerUp boolean(if powerup, we merge them in powerUp matchable,
+     * if not, our collection point is the train at the bottom). Reset the sorting order and return to object
+     * to the pool.
+     */
     public IEnumerator Resolve(Transform collectionPoint, bool isPowerUp)
     {
         this.powerType = PowerType.none;

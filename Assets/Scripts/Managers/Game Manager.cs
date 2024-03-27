@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
+using UnityEditor;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -31,8 +32,14 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Fader loadingScreen,
                                     darkener;
 
+    [SerializeField]
+    private Canvas canvasLoading;
+
     [SerializeField] private Vector2Int dimensions;
 
+    private GameObject celebration;
+
+    //Get instances for classes and animation.
     private void Start()
     {
         pool = (MatchablePool) MatchablePool.Instance;
@@ -41,10 +48,12 @@ public class GameManager : Singleton<GameManager>
         cursor = Cursor.Instance;
         cameraScript = CameraScript.Instance;
         scoreManager = ScoreManager.Instance;
+        celebration = canvasLoading.gameObject.transform.Find("Firework_01").gameObject;
         
         StartCoroutine(Setup());
     }
 
+    //Get related informations about level with PlayerPrefs, setup the grid and let the player play with enabling cursor.
     private IEnumerator Setup()
     {
         cursor.enabled = false;
@@ -60,7 +69,7 @@ public class GameManager : Singleton<GameManager>
 
         StartCoroutine(loadingScreen.Fade(0));
         if (PlayerPrefs.GetInt("Music") != 2)
-        audioManager.PlayMusic();
+            audioManager.PlayMusic();
         Debug.Log("TargetScore:" + targetScore);
         Debug.Log("MoveCount:" + moveCount);
 
@@ -88,11 +97,13 @@ public class GameManager : Singleton<GameManager>
         GameOver();
     }
 
+    //Stop the music, play sound effect and update the text according to result and fade the background. Finally, move results page up.    
     public void GameOver()
     {
         audioManager.StopMusic();
         if (scoreManager.Score >= targetScore)
         {
+            celebration.SetActive(true);
             audioManager.PlaySound(SoundEffects.win);
             resultText.text = "Congratulations";
             int levelNumber = PlayerPrefs.GetInt("levelNumber") + 1;
@@ -112,8 +123,10 @@ public class GameManager : Singleton<GameManager>
         StartCoroutine(resultsPage.MoveToPosition(new Vector2(0, 0)));
     }
 
+    //Move the result page down, disable the animation and reset the cursor, grid, score and move count.
     private IEnumerator TryAgain()
     {
+        celebration.SetActive(false);
         StartCoroutine(resultsPage.MoveToPosition(new Vector2(0, -15)));
         yield return StartCoroutine(darkener.Fade(0));
         darkener.Hide(true);
@@ -136,6 +149,7 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator Quit()
     {
+        celebration.SetActive(false);
         yield return StartCoroutine(loadingScreen.Fade(1));
         SceneManager.LoadScene("Main Menu");
     }

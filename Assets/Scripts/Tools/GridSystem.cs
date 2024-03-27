@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
+//Grid System pattern with generic type for matchable grid. 
 public class GridSystem<T> : Singleton<GridSystem<T>>
 {
     private T[,] data;
@@ -114,33 +111,5 @@ public class GridSystem<T> : Singleton<GridSystem<T>>
         temp = data[pos1.x, pos1.y];
         data[pos1.x, pos1.y] = data[pos2.x, pos2.y];
         data[pos2.x, pos2.y] = temp;
-    }
-
-    public override string ToString()
-    {
-        string s = "";
-        if (data != null)
-        {
-            for (int y = 0; y < dimensions.y; y++)
-            {
-                s += "[";
-                for (int x = 0; x < dimensions.x; x++)
-                {
-                    if (isEmpty(new Vector2Int(x, y)))
-                        s += "x";   
-                    else
-                        s += data[x, y].ToString();
-
-                    if (x != dimensions.x - 1)
-                    {
-                        s += ",";
-                    }
-                }
-
-                s += "]\n";
-            }
-        }
-
-        return s;
     }
 }

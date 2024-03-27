@@ -42,6 +42,7 @@ public class ScoreManager : Singleton<ScoreManager>
         scoreText.text = "Score : " + score;
     }
 
+    //Resolving matches with power up boolean (if player uses powerup, it is true)
     public IEnumerator ResolveMatch(Match toResolve, bool fromPowerUp)
     {
         Matchable matchable;
@@ -49,6 +50,8 @@ public class ScoreManager : Singleton<ScoreManager>
         Transform targetPoint = collectionPoint;
         bool isPowerUp = false;
 
+        //if the match is not coming from a power up and the count is bigger than 3, getting powerupMatchable
+        //from match and change its type, sprite and sorting order.
         if (!fromPowerUp && toResolve.Count > 3)
         {
             powerUpMatchable = pool.setPowerUpForMatchable(toResolve.getPowerUpMatchable, toResolve.Type);
@@ -62,6 +65,8 @@ public class ScoreManager : Singleton<ScoreManager>
             audioManager.PlaySound(SoundEffects.resolve);
         }
 
+        //For every matchable in match, we remove them from grid and move into target point.
+        //if the match is bigger than 3, we move the matchables to the power up matchable and merge them.
         for (int i = 0; i != toResolve.Count; i++)
         {
             matchable = toResolve.Matchables[i];
@@ -83,8 +88,9 @@ public class ScoreManager : Singleton<ScoreManager>
             }
 
         }
-
+        //Add score by get square of the count of the match.
         AddScore(toResolve.Count * toResolve.Count);
+        //if we have power up matchable, we reset it's sorting order.
         if (powerUpMatchable != null)
             powerUpMatchable.spriteRenderer.sortingOrder = 1;
         yield return null;

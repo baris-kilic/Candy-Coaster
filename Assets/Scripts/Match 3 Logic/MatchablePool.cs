@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Object pool for matchables.
 public class MatchablePool : ObjectPool<Matchable>
 {
     [SerializeField] private int howManyTypes;
     [SerializeField] private Sprite[] sprites;
-    public bool allowSwap = true;
+    public bool allowSwap = true; //Using these for block the multiple swaps concurrently. Player should wait the swap operation and chain reactions end.
 
     [SerializeField] private Sprite crossPowerUp;
     [SerializeField] private Sprite match4VerticalPowerUp;
     [SerializeField] private Sprite match4HorizontalPowerUp;
     [SerializeField] private Sprite match5PowerUp;
+
     public void RandomizeType(Matchable toRandomize)
     {
         int random = Random.Range(0,howManyTypes);
@@ -26,6 +28,7 @@ public class MatchablePool : ObjectPool<Matchable>
         return matchable;
     }
 
+    //Method for found matchables by try the next possible matchable for block valid match in populate grid.
     public int NextType(Matchable newMatchable)
     {
         int nextType = (newMatchable.Type + 1) % howManyTypes;

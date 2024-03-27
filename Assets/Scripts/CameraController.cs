@@ -17,7 +17,6 @@ public class CameraController : MonoBehaviour
     {
         offset = transform.position;
 
-        // Ekran boyutunu ve çözünürlüðünü al
         screenWidth = Screen.width;
         screenHeight = Screen.height;
 

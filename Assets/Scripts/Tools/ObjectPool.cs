@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Object pooling design pattern for generic type. 
 public class ObjectPool<T> : Singleton<ObjectPool<T>> where T : MonoBehaviour 
 {
     [SerializeField] protected T prefab;
@@ -32,6 +33,9 @@ public class ObjectPool<T> : Singleton<ObjectPool<T>> where T : MonoBehaviour
         isReady = true;
     }
 
+    //If the pool is not ready, create pool with size of 1
+    //If pool ready, controlling the disabled objects and return them in for loop
+    //After that, instantiate a matchable prefab and activate it.
     public T GetPooledObject()
     {
         if (!isReady)

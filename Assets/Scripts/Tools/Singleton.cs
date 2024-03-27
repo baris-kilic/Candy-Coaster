@@ -2,6 +2,9 @@ using System.Runtime.CompilerServices;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
+/*
+ * Singleton design pattern for generic type.  
+ */
 public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
 {
     private static T instance;

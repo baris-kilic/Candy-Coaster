@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Camera controller script for changable matchable grid sizes with doing zoom.
 public class CameraScript : Singleton<CameraScript>
 {
 

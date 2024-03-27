@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
 
+//Fader class for do fade animation using for such as loading screens with DOTween library.
 [RequireComponent(typeof(Image))]
 public class Fader : MonoBehaviour
 {

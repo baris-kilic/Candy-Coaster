@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+//Orientation enum class for getting information about is match vertical, horizontal and
+//both class for cross matches.
 public enum Orientation
 {
     none,
@@ -27,6 +29,7 @@ public class Match
     private List<Matchable> matchables;
     private Matchable toPowerUp = null;
 
+    //Return the power type of the match by looking it's count and orientation.
     public PowerType Type 
     {
         get 
@@ -43,6 +46,9 @@ public class Match
                 return PowerType.none;
         }
     }
+
+    //If we have a power up matchable(it can be done with swapping last element of the match, not coming
+    //from chain reactions, it should be done by player),return it. If not, return the random matchable from match.
     public Matchable getPowerUpMatchable 
     {  
         get 
@@ -78,6 +84,9 @@ public class Match
     {
         matchables.Remove(matchable);
     }
+
+    //Merge function by looking the orientation of coming match and this match. It changes the orientation of these.
+    //if the orientation is same (the match is vertical and the other match is vertical also), it doesn't change the orientation type.
     public void Merge(Match toMerge)
     {
         matchables.AddRange(toMerge.matchables);
@@ -101,17 +110,4 @@ public class Match
     {
         matchables.Add(toAdd);
     }
-    public override string ToString()
-    {
-        string s = "Match of type " + matchables[0].Type + " : ";
-
-        foreach (Matchable m in matchables)
-        {
-            s += "(" + m.position.x + ", " + m.position.y + ") ";
-        }
-
-        return s;
-    }
-
-
 }

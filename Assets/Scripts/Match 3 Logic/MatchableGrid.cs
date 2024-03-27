@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.SceneManagement;
@@ -14,6 +13,7 @@ public class MatchableGrid : GridSystem<Matchable>
     private ScoreManager scoreManager;
     private AudioManager audioManager;
 
+    // Offset for placing items off-screen initially
     [SerializeField] private Vector3 offScreenOffset;
 
     [SerializeField]
@@ -32,12 +32,14 @@ public class MatchableGrid : GridSystem<Matchable>
         {
             for (int x = 0; x < Dimensions.x; x++)
             {
+                // Remove and return items from the grid to the pool
                 if (!isEmpty(new Vector2Int(x, y)))
                 {
                     pool.ReturnObjectToPool(RemoveItemFromGrid(new Vector2Int(x, y)));
                 }
             }
         }
+        // Populate the grid after resetting
         yield return StartCoroutine(PopulateGrid(false,true));
     }
 
@@ -51,20 +53,22 @@ public class MatchableGrid : GridSystem<Matchable>
             {
                 if (isEmpty(new Vector2Int(x, y)))
                 {
+                    // Get a random matchable from the pool
                     newMatchable = pool.GetRandomMatchable();
-                    //newMatchable.transform.position = transform.position + new Vector3(x, y);
+                    // Position the matchable off-screen initially
                     newMatchable.transform.position = transform.position + new Vector3(x, y) + offScreenOffset;
                     newMatchable.gameObject.SetActive(true);
                     newMatchable.position = new Vector2Int(x, y);
                     PutItemOnGrid(new Vector2Int(x, y), newMatchable);
 
-
+                    // Add the matchable to the list of new matchables
                     newMatchables.Add(newMatchable);
 
+                    // Check if the new matchable creates an immediate match (if not allowed)
                     int initialType = newMatchable.Type;
-                 
                     while (!allowMatches && IsPartOfAMatch(newMatchable))
                     {
+                        // If the matchable creates a match with its initial type, log a warning
                         if (initialType == pool.NextType(newMatchable))
                         {
                             Debug.LogWarning("Matchable Type Cannot Be Found X:" + x + " Y:" + y + ".");
@@ -77,6 +81,7 @@ public class MatchableGrid : GridSystem<Matchable>
             }
         }
 
+        // Move the newly added matchables into position
         for (int i = 0; i < newMatchables.Count; i++)
         {
             if (initialPopulation)
@@ -145,7 +150,9 @@ public class MatchableGrid : GridSystem<Matchable>
 
     public IEnumerator TrySwap(Matchable[] toBeSwapped)
     {
+        // Disable swapping while processing
         pool.allowSwap = false;
+
         Match matches1 = null;
         Match matches2 = null;
         bool powerUpMatch1 = false;
@@ -154,10 +161,15 @@ public class MatchableGrid : GridSystem<Matchable>
         copies[0] = toBeSwapped[0];
         copies[1] = toBeSwapped[1];
 
+        // Cancel any ongoing hints
         Hint.Instance.CancelHint();
 
+        // Perform the swap and wait for it to complete
         yield return StartCoroutine(Swap(copies));
 
+        // Handling matches involving Match-5 power-ups, if we use match5 powerup with a normal matchable, 
+        //it finds all the matchables with same type and match them. If the match5 powerup combines with 
+        //match5 powerup also, it matches everything.
         if (copies[0].getPowerType == PowerType.match5)
         {
             Match candyMatch = null;
@@ -170,6 +182,7 @@ public class MatchableGrid : GridSystem<Matchable>
             }
             candyMatch.AddMatchable(copies[0]);
             StartCoroutine(scoreManager.ResolveMatch(candyMatch,true));
+            // Update move count and check for additional matches and break.
             UpdateCount();
             StartCoroutine(FindAndScanForMatches());
             yield break;
@@ -188,11 +201,13 @@ public class MatchableGrid : GridSystem<Matchable>
             }
             candyMatch.AddMatchable(copies[1]);
             StartCoroutine(scoreManager.ResolveMatch(candyMatch, true));
+            // Update move count and check for additional matches and break.
             UpdateCount();
             StartCoroutine(FindAndScanForMatches());
             yield break;
         }
 
+        // Check if either matchable is a power-up
         if (copies[0].getPowerType != PowerType.none)
         {
             powerUpMatch1 = true;
@@ -211,6 +226,7 @@ public class MatchableGrid : GridSystem<Matchable>
             matches2 = GetMatch(copies[1]);
         }
 
+        // Handle power-up matches, if we have multiple matches, remove the duplicate matchables for matches.
         if (powerUpMatch1 || powerUpMatch2)
         {
             if (powerUpMatch1)
@@ -265,6 +281,7 @@ public class MatchableGrid : GridSystem<Matchable>
             }
         }
 
+        // Resolve regular matches if any
         if (matches1 != null && !powerUpMatch1)
         {
             StartCoroutine(scoreManager.ResolveMatch(matches1, false));
@@ -274,93 +291,117 @@ public class MatchableGrid : GridSystem<Matchable>
             StartCoroutine(scoreManager.ResolveMatch(matches2, false));
         }
 
+        // If no matches were made, revert the swap
         if (matches1 == null && matches2 == null)
         {
             yield return StartCoroutine(Swap(copies));
 
+            // Check for new matches after reverting the swap
             if (ScanForMatches())
             {
                 StartCoroutine(FindAndScanForMatches());
             } else
             {
+                // If no matches found, allow swapping again
                 pool.allowSwap = true;
             }
         }
             
         else
         {
+            // If matches were found, update move count and check for additional matches
             UpdateCount();
             StartCoroutine(FindAndScanForMatches());
         }    
     }
 
+    // Coroutine to find and scan for matches after grid changes
     private IEnumerator FindAndScanForMatches()
     {
+        // Collapse the grid to remove empty spaces
         CollapseGrid();
         yield return StartCoroutine(PopulateGrid(true));
+        // If matches are found, continue searching
         if (ScanForMatches())
         {
             StartCoroutine(FindAndScanForMatches());
-        } else
+        }
+        else
         {
+            // If no more matches, check for available moves
             CheckForMoves();
+            // Allow swapping again
             pool.allowSwap = true;
         }
     }
 
+    // Check for available moves
     public void CheckForMoves()
     {
         if (ScanForMoves() == 0 || GameManager.Instance.MoveCount == 0)
         {
+            // If no moves available or no more moves allowed, end game
             GameManager.Instance.NoMoreMoves();
         }
         else
         {
+            // If moves available, indicate a random move as a hint
             Hint.Instance.IndicateHint(possibleMoves[UnityEngine.Random.Range(0, possibleMoves.Count)].transform);
         }
-     }
+    }
 
+    // Method to find matches starting from a given matchable
     private Match GetMatch(Matchable matchable)
     {
         Match match = new Match(matchable);
         Match horizontalMatch,
             verticalMatch;
 
+        // Find horizontal matches
         horizontalMatch = GetMatchesInDirection(match, matchable, Vector2Int.left);
         horizontalMatch.Merge(GetMatchesInDirection(match, matchable, Vector2Int.right));
         
         horizontalMatch.setOrientation(Orientation.horizontal);
+
+        // If horizontal match found, merge and search for vertical branches
         if (horizontalMatch.Count > 1)
         {
             match.Merge(horizontalMatch);
             GetBranches(match, horizontalMatch, Orientation.vertical);
         }
 
+        // Find vertical matches
         verticalMatch = GetMatchesInDirection(match, matchable, Vector2Int.up);
         verticalMatch.Merge(GetMatchesInDirection(match, matchable, Vector2Int.down));
 
         verticalMatch.setOrientation(Orientation.vertical);
+        // If vertical match found, merge and search for horizontal branches
         if (verticalMatch.Count > 1)
         {
             match.Merge(verticalMatch);
             GetBranches(match, verticalMatch, Orientation.horizontal);
         }
 
+        // If no match found, return null
         if (match.Count == 1)
             return null;
 
         return match;
     }
 
+    // Method to recursively find branches of a match
     private void GetBranches(Match tree, Match selectedBranch, Orientation orientation)
     {
         Match branch;
         
         foreach (Matchable match in selectedBranch.Matchables)
         {
+            // Find matches in the specified direction
             branch = GetMatchesInDirection(tree, match, orientation == Orientation.horizontal ? Vector2Int.left : Vector2Int.up);
             branch.Merge(GetMatchesInDirection(tree, match, orientation == Orientation.horizontal ? Vector2Int.right : Vector2Int.down));
             branch.setOrientation(orientation);
+
+            // If branch found, merge and continue searching recursively
             if (branch.Count > 1)
             {
                 tree.Merge(branch);
@@ -369,18 +410,23 @@ public class MatchableGrid : GridSystem<Matchable>
         }
     }
 
+    // Coroutine to perform swapping animation
     private IEnumerator Swap(Matchable[] toBeSwapped)
     {
+        // Swap items in the grid
         SwapItems(toBeSwapped[0].position, toBeSwapped[1].position);
 
+        // Swap positions of matchables
         Vector2Int temp = toBeSwapped[0].position;
         toBeSwapped[0].position = toBeSwapped[1].position;
         toBeSwapped[1].position = temp;
 
+        // Get positions for animation
         Vector3 pos1 = toBeSwapped[0].transform.position;
         Vector3 pos2 = toBeSwapped[1].transform.position;
 
         audioManager.PlaySound(SoundEffects.swap);
+
         // Wait for both coroutines to finish
         StartCoroutine(toBeSwapped[0].SwapToPosition(pos2));
         yield return StartCoroutine(toBeSwapped[1].SwapToPosition(pos1));
@@ -503,6 +549,7 @@ public class MatchableGrid : GridSystem<Matchable>
         return match;
     }
 
+    // Method to collapse the grid by moving matchables downward to fill empty spaces
     private void CollapseGrid()
     {
         for (int x = 0; x < Dimensions.x; x++)
@@ -515,7 +562,7 @@ public class MatchableGrid : GridSystem<Matchable>
                     {
                         if (!isEmpty(new Vector2Int (x, k)) && GetItemFromGrid(new Vector2Int(x, k)).Idle)
                         {
-                            // Move upper matchable to the empty part (x,k) to (x,y)
+                            // Move the matchable above the empty space downward
                             MoveMatchableToTheDown(GetItemFromGrid(new Vector2Int(x, k)), new Vector2Int(x, y));
                             break;
                         }
@@ -525,6 +572,7 @@ public class MatchableGrid : GridSystem<Matchable>
         }
     }
 
+    // Method to move a matchable downward in the grid and animate the movement
     private void MoveMatchableToTheDown(Matchable matchable, Vector2Int pos) 
     {
         RemoveItemFromGrid(matchable.position);
@@ -533,6 +581,7 @@ public class MatchableGrid : GridSystem<Matchable>
         StartCoroutine(matchable.MoveToPosition(transform.position + new Vector3 (pos.x, pos.y)));
     }
 
+    // Method to scan for matches in the grid
     private bool ScanForMatches()
     {
         bool hasAMatch = false;
@@ -544,7 +593,8 @@ public class MatchableGrid : GridSystem<Matchable>
                 {
 
                     Matchable matchable = GetItemFromGrid(new Vector2Int(x, y));
-                        
+
+                    // Check if the matchable is idle and does not have any special power
                     if (!matchable.Idle || matchable.getPowerType != PowerType.none)
                         continue;
 
@@ -562,6 +612,7 @@ public class MatchableGrid : GridSystem<Matchable>
         return hasAMatch;
     }
 
+    // Method to scan for possible moves
     private int ScanForMoves()
     {
         possibleMoves = new List<Matchable>();
@@ -572,12 +623,16 @@ public class MatchableGrid : GridSystem<Matchable>
             for (int x = 0; x < Dimensions.x; x++)
             {
                 Matchable newMatchable = GetItemFromGrid(new Vector2Int(x, y));
+
+                // Check if the cell is within the grid boundaries and not empty
                 if (CheckBound(new Vector2Int(x, y)) && !isEmpty(new Vector2Int(x, y)) && 
                     newMatchable.getPowerType == PowerType.none && CanMove(newMatchable))
                 {
                     hasAMatch = true;
                     possibleMoves.Add(newMatchable);
-                } else if (CheckBound(new Vector2Int(x, y)) && !isEmpty(new Vector2Int(x, y)) &&
+                }
+                // If the cell contains a special matchable and no other moves have been found, add it as a possible move
+                else if (CheckBound(new Vector2Int(x, y)) && !isEmpty(new Vector2Int(x, y)) &&
                     newMatchable.getPowerType != PowerType.none && !hasAMatch)
                 {
                     possibleMoves.Add(newMatchable);
@@ -587,19 +642,18 @@ public class MatchableGrid : GridSystem<Matchable>
         return possibleMoves.Count;
     }
 
+    // Method to check if a matchable can be moved
     private bool CanMove(Matchable newMatchable)
     {
-        if (CanMoveWithDirection(newMatchable, Vector2Int.up))
-            return true;
-        else if (CanMoveWithDirection(newMatchable, Vector2Int.down))
-            return true;
-        else if(CanMoveWithDirection(newMatchable, Vector2Int.left))
-            return true;
-        else if(CanMoveWithDirection(newMatchable, Vector2Int.right))
-            return true;
-        return false;
+        // Check if the matchable can move in any direction
+        return CanMoveWithDirection(newMatchable, Vector2Int.up) ||
+               CanMoveWithDirection(newMatchable, Vector2Int.down) ||
+               CanMoveWithDirection(newMatchable, Vector2Int.left) ||
+               CanMoveWithDirection(newMatchable, Vector2Int.right);
     }
 
+
+    // Method to check if a matchable can move in a specific direction
     private bool CanMoveWithDirection(Matchable newMatchable, Vector2Int direction)
     {
         int matchableType = newMatchable.Type;
@@ -607,6 +661,8 @@ public class MatchableGrid : GridSystem<Matchable>
         int lowerMatchCount = 0;
         int leftMatchCount = 0;
         int rightMatchCount = 0;
+
+        // Count matches in each direction
         if (CheckBound(newMatchable.position + Vector2Int.up))
             upperMatchCount = CountMatchesInDirectionWithPosition(newMatchable.position + direction, Vector2Int.up, matchableType);
         if (CheckBound(newMatchable.position + Vector2Int.down))
@@ -615,7 +671,8 @@ public class MatchableGrid : GridSystem<Matchable>
             leftMatchCount = CountMatchesInDirectionWithPosition(newMatchable.position + direction, Vector2Int.left, matchableType);
         if (CheckBound(newMatchable.position + Vector2Int.right))
             rightMatchCount = CountMatchesInDirectionWithPosition(newMatchable.position + direction, Vector2Int.right, matchableType);
-        
+
+        // Check if the matchable can move in the specified direction
         if (direction == Vector2Int.up)
         {
             if (upperMatchCount == 2 || (leftMatchCount >= 1 && rightMatchCount >= 1) || (leftMatchCount == 2) || (rightMatchCount == 2))
@@ -640,12 +697,14 @@ public class MatchableGrid : GridSystem<Matchable>
         return false;
     }
 
+    // Method to count matches in a direction starting from a given position
     private int CountMatchesInDirectionWithPosition(Vector2Int position, Vector2Int direction, int matchType)
     {
         int matches = 0;
 
         Vector2Int checkPosition = position + direction;
 
+        // Count consecutive matches in the specified direction
         while (CheckBound(checkPosition) && !isEmpty(checkPosition) && GetItemFromGrid(checkPosition).Type == matchType 
             && GetItemFromGrid(checkPosition).getPowerType == PowerType.none)
         {

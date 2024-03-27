@@ -4,6 +4,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using Unity.Mathematics;
 
+//Movable script for matchables and pages. Using easing functions and dotween library for moves.
 public class Movable : MonoBehaviour
 {
     private Vector3 from, to;
