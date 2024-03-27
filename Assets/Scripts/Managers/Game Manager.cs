@@ -114,7 +114,8 @@ public class GameManager : Singleton<GameManager>
             resultText.text = "No More Moves";
         }
         scoreText.text = "Score : " + scoreManager.Score.ToString();
-        PlayerPrefs.SetInt("level" + PlayerPrefs.GetInt("levelNumber") + "highest", scoreManager.Score);
+        if (PlayerPrefs.GetInt("level" + PlayerPrefs.GetInt("levelNumber") + "highest") < scoreManager.Score)
+            PlayerPrefs.SetInt("level" + PlayerPrefs.GetInt("levelNumber") + "highest", scoreManager.Score);
         cursor.enabled = false;
 
         darkener.Hide(false);
